@@ -28,7 +28,7 @@ def menu_ingresar_usuario():
 
     if resultado[0] == True:  
         user_id = resultado[1] 
-        print("Ingreso exitoso. Bienvenido, {}.".format(nombre_usuario))
+        print(f"\nIngreso exitoso. Bienvenido, {nombre_usuario}.")
         time.sleep(2)
         return nombre_usuario, user_id
     else:
@@ -49,9 +49,9 @@ def menu_principal():
     while True:
         print("\033c", end="") 
         print("Bienvenido al sistema de DevSpace\n")
-        print("Seleccione una opción:")
+        print("Seleccione una opción: \n")
         print("1. Ingresar al sistema")
-        print("2. Salir")
+        print("2. Salir \n")
 
         respuesta_usuario = input("Ingrese el número de la opción deseada: ")
 
@@ -103,13 +103,36 @@ def menu_sistema(nombre_usuario, user_id):
         print("5. Consulta de seguidores de mis spaces")
         print("6. Gestionar seguidores")
         print("7. Consulta de post por space")
-        print("8. Cerrar sesión")
+        print("8. Cerrar sesión \n")
         respuesta = input("Seleccione una opción: ")  
         
         if respuesta == "1":
-            pass
+            print("\033c", end="")
+            print("Lista de usuarios:\n")
+            success, data = ds.get_users()
+    
+            if success:
+                for usuario in data:
+                    print(f"ID: {usuario[0]} | Usuario: {usuario[1]}")
+            else:
+                print("No se pudo obtener la lista de usuarios.")
+            input("\nPresione Enter para volver al menú...")
+            
         elif respuesta == "2":
-            pass
+            print("\033c", end="")
+            print("Lista de spaces:\n")
+            
+            success, data = ds.get_users()
+            for usuario in data:
+                success, data = ds.get_spaces_by_user(usuario[1])
+                if success:
+                    for space in data:
+                            success_s, spaces = ds.get_spaces_by_user(usuario[1])
+                            if success_s:
+                                for space in spaces:
+                                    print(f"ID: {space[0]} | Space: {space[1]}")
+    
+            input("\nPresione Enter para volver al menú...")
         elif respuesta == "3":
             pass
         elif respuesta == "4":  
@@ -122,7 +145,7 @@ def menu_sistema(nombre_usuario, user_id):
             pass
         elif respuesta == "8":
             print("\033c", end="")
-            print("Cerrando sesión. ¡Hasta luego, {}!".format(nombre_usuario))
+            print(f"Cerrando sesión. ¡Hasta luego, {nombre_usuario}!")
             time.sleep(2)
             print("\033c", end="")
             break
@@ -130,3 +153,10 @@ def menu_sistema(nombre_usuario, user_id):
             print("\033c", end="")
             print("Opción no válida. Por favor, seleccione una opción válida.")
             time.sleep(2)
+            
+
+if False:
+    success, data = ds.create_user("alonso", "rbalonso8@gmail.com", "12345")
+    print(success, data)
+
+menu_principal()
