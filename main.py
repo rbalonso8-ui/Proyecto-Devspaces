@@ -106,6 +106,10 @@ def menu_sistema(nombre_usuario, user_id):
         print("8. Cerrar sesión \n")
         respuesta = input("Seleccione una opción: ")  
         
+        #? ======================
+        #?  Consulta de Usuarios
+        #? ======================
+        
         if respuesta == "1":
             print("\033c", end="")
             print("Lista de usuarios:\n")
@@ -117,6 +121,10 @@ def menu_sistema(nombre_usuario, user_id):
             else:
                 print("No se pudo obtener la lista de usuarios.")
             input("\nPresione Enter para volver al menú...")
+            
+        #? ======================
+        #?  Consulta de Spaces
+        #? ======================
             
         elif respuesta == "2":
             print("\033c", end="")
@@ -130,7 +138,12 @@ def menu_sistema(nombre_usuario, user_id):
                         for space in spaces:
                             print(f"ID: {space[0]} | Space: {space[1]} | Usuario: {user[0]}")
 
-            input("\nPresione Enter para volver al menú...")        
+            input("\nPresione Enter para volver al menú...")      
+            
+        #? ======================
+        #?   Seguir un Spaces
+        #? ======================  
+        
         elif respuesta == "3":
             print("\033c", end="")
             print("Seguir un space:\n")
@@ -161,7 +174,11 @@ def menu_sistema(nombre_usuario, user_id):
                     print("\033c", end="")
                     print("Opción no válida. Por favor, seleccione una opción válida.")
                     time.sleep(2)
-                    
+                 
+        #? ================================
+        #?   Consulta de Spaces seguidos
+        #? ================================
+        
         elif respuesta == "4":  
             print("\033c", end="")
             print("Spaces que sigues:\n")
@@ -178,6 +195,10 @@ def menu_sistema(nombre_usuario, user_id):
                 print("No se pudo obtener la lista.")
     
             input("\nPresione Enter para volver al menú...")
+        
+        #? =========================================
+        #?   Consulta de segudiores de mis spaces
+        #? =========================================
         elif respuesta == "5":
             print("\033c", end="")
             print("Seguidores de mis spaces:\n")
@@ -194,10 +215,60 @@ def menu_sistema(nombre_usuario, user_id):
                 print("No se pudo obtener la lista de seguidores.")
     
             input("\nPresione Enter para volver al menú...")
+            
+        #? =========================
+        #?   Gestionar seguidores
+        #? =========================
+        
         elif respuesta == "6":
-            pass
+            print("\033c", end="")
+            print("Gestionar seguidores:\n")
+    
+            success, data = ds.get_followers(nombre_usuario)
+    
+            if success:
+                if len(data) == 0:
+                    print("No tienes solicitudes de seguidores pendientes.")
+                    time.sleep(2)
+            else:
+                for seguidor in data:
+                    print(f"Seguidor: {seguidor[0]} | Space: {seguidor[2]}")
+                    print("\nSeleccione una opcion del sistema:")
+                    print("\n1. Aceptar seguidor")
+                    print("2. Rechazar seguidor")
+                    decision = input("\nIngrese el número de la opción deseada: ")
+                
+                    if decision == "1":
+                        success_s, data_s = ds.handle_follower(nombre_usuario, seguidor[1], seguidor[0], True)
+                        if success_s:
+                            print("Seguidor aceptado.")
+                        else:
+                            print("No se pudo aceptar.")
+                    elif decision == "2":
+                        success_s, data_s = ds.handle_follower(nombre_usuario, seguidor[1], seguidor[0], False)
+                        if success_s:
+                            print("Seguidor rechazado.")
+                        else:
+                            print("No se pudo rechazar.")
+                            time.sleep(1)
+                    else:
+                        print("Opción no válida. Por favor, seleccione una opción válida.")
+                        time.sleep(1)
+                else:
+                    print("No se pudo obtener la lista de seguidores.")
+                    time.sleep(2)
+        
+        #? ================================
+        #?   Consulta de post por space
+        #? ================================
+        
         elif respuesta == "7":
             pass
+        
+        #? ==================
+        #?   Cerrar sesión
+        #? ==================
+        
         elif respuesta == "8":
             print("\033c", end="")
             print(f"Cerrando sesión. ¡Hasta luego, {nombre_usuario}!")
@@ -213,5 +284,5 @@ def menu_sistema(nombre_usuario, user_id):
 if False:
     success, data = ds.create_user("alonso", "rbalonso8@gmail.com", "12345")
     print(success, data)
-
+    
 menu_principal()
