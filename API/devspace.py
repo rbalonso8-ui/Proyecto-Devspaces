@@ -1,4 +1,3 @@
-API/devspace.py
 from urllib import response
 
 import requests
