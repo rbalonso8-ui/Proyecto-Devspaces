@@ -121,18 +121,16 @@ def menu_sistema(nombre_usuario, user_id):
         elif respuesta == "2":
             print("\033c", end="")
             print("Lista de spaces:\n")
-            
-            success, data = ds.get_users()
-            for usuario in data:
-                success, data = ds.get_spaces_by_user(usuario[1])
-                if success:
-                    for space in data:
-                            success_s, spaces = ds.get_spaces_by_user(usuario[1])
-                            if success_s:
-                                for space in spaces:
-                                    print(f"ID: {space[0]} | Space: {space[1]}")
     
-            input("\nPresione Enter para volver al menú...")
+            success, usuarios = ds.get_users()
+            if success:
+                for user in usuarios:
+                    success_s, spaces = ds.get_spaces_by_user(user[0])
+                    if success_s:
+                        for space in spaces:
+                            print(f"ID: {space[0]} | Space: {space[1]} | Usuario: {user[0]}")
+
+            input("\nPresione Enter para volver al menú...")        
         elif respuesta == "3":
             pass
         elif respuesta == "4":  
