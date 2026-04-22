@@ -3,7 +3,7 @@ Módulo principal del sistema DevSpaces
 
 Autor: Alonso Rodríguez Bolaños
 Fecha: 24/06/2026
-    """
+"""
 import sys
 
 from requests import post
@@ -18,72 +18,41 @@ import time
 #!     MENU INICIAL
 #! ======================
 
-def menu_ingresar_usuario():
-    """Establecer el menú de opciones para el ingreso de un usuario existente en el sistema de DevSpace.
-
-    Returns:
-        tuple: (nombre_usuario, user_id) si el ingreso es exitoso, False si falla.
-    """
-    print("\033c", end="")
-    print("Ingresar al sistema\n")
-
-    nombre_usuario = input("Ingrese su nombre de usuario: ")
-    contrasena = input("Ingrese su contraseña: ")
-    resultado = ds.login(nombre_usuario, contrasena) 
-
-    if resultado[0] == True:  
-        user_id = resultado[1] 
-        print(f"\nIngreso exitoso. Bienvenido, {nombre_usuario}.")
-        time.sleep(2)
-        return nombre_usuario, user_id
-    else:
-        print("Error al ingresar. Por favor, verifique su nombre de usuario y contraseña e intente nuevamente.")
-        time.sleep(2)
-        return False 
-    
-#! ======================
-#!    MENU PRINCIPAL
-#! ======================
-
 def menu_principal():
-    """Establecer el menú de opciones principales del sistema en terminal.
+    """Establece el menú principal del sistema.
 
     Returns:
         None
     """
+    utils.limpiar()
     while True:
-        print("\033c", end="") 
-        print("Bienvenido al sistema de DevSpace\n")
-        print("Seleccione una opción: \n")
-        print("1. Ingresar al sistema")
-        print("2. Salir \n")
+        opcion = ui.ingresar_terminal()
 
-        respuesta_usuario = input("Ingrese el número de la opción deseada: ")
+        if opcion == "1":
+            nombre_usuario, contraseña = ui.login_terminal()
+            resultado = controller.login(nombre_usuario, contraseña)
 
-        if respuesta_usuario == "1":
-            resultado = menu_ingresar_usuario()
             if resultado:
-                nombre_usuario, user_id = resultado  
-                print("\033c", end="")
+                nombre_usuario, user_id = resultado
+                print(f"\nIngreso exitoso. Bienvenido, {nombre_usuario}.")
+                utils.esperar(2)
                 menu_sistema(nombre_usuario, user_id)
-                
             else:
-                print("\033c", end="")
-                print("Usuario no válido. Por favor, intente nuevamente.")
-                time.sleep(2)
+                print("\nCredenciales incorrectas. Intente nuevamente.")
+                utils.esperar(2)
 
-        elif respuesta_usuario == "2":
-            print("\033c", end="")
+        elif opcion == "2":
+            utils.limpiar()
             print("Gracias por usar DevSpace. ¡Hasta luego!")
-            time.sleep(2)
-            print("\033c", end="")
-            break 
+            utils.esperar(2)
+            utils.limpiar()
+            break
 
         else:
-            print("\033c", end="")
-            print("Opción no válida. Por favor, seleccione una opción válida.")
-            time.sleep(2)  
-            
+            utils.limpiar()
+            print("Opción no válida.")
+            utils.esperar(2)
+
 #! ======================
 #!    MENU INTERNO
 #! ======================
@@ -317,23 +286,6 @@ def menu_sistema(nombre_usuario, user_id):
                             else:
                                 utils.resaltar(post[2])
 
-                            print("\n1. Siguiente  2. Anterior  3. Primer post  4. Último post  5. Salir")
-                            nav = input("\nOpción: ")
-
-                            if nav == "1":
-                                indice = min(indice + 1, len(posts) - 1)
-                            elif nav == "2":
-                                indice = max(indice - 1, 0)
-                            elif nav == "3":
-                                indice = 0
-                            elif nav == "4":
-                                indice = len(posts) - 1
-                            elif nav == "5":
-                                break
-                            else:
-                                print("Opción no válida.")
-                                time.sleep(1)
-
             input("\nPresione Enter para volver al menú...")
         
         #? ==================
@@ -357,6 +309,7 @@ if False:
     print(success, data)
     success, data = ds.create_user("carlos", "carlos@gmail.com", "12345")
     print(success, data)
-
     success, data = ds.create_post(36, "pares", "def es_par(n):\n    if n % 2 == 0:\n        print('par')\n    else:\n        print('impar')", "snippet")
     print(success, data)
+    
+menu_principal()

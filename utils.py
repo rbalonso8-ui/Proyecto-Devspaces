@@ -62,3 +62,30 @@ def resaltar(contenido):
         for palabra in PALABRAS_CLAVE:
             linea = linea.replace(palabra, VERDE + palabra + RESET)
         print(linea)
+        
+#!===================
+#! Limpiar Terminal
+#!===================
+
+def limpiar():
+    """Limpia la terminal para mejorar la experiencia de usuario.
+
+    Returns:
+        None
+    """
+    print("\033[H\033[J", end="")
+    
+#!===================
+#!     Esperar
+#!===================
+
+def esperar(segundos):
+    """Pausa la ejecución durante un número específico de segundos.
+
+    Args:
+        segundos (int): Número de segundos a esperar.
+
+    Returns:
+        None
+    """
+    time.sleep(segundos)
