@@ -360,6 +360,3 @@ if False:
 
     success, data = ds.create_post(36, "pares", "def es_par(n):\n    if n % 2 == 0:\n        print('par')\n    else:\n        print('impar')", "snippet")
     print(success, data)
-    
-if __name__ == "__main__":
-    menu_principal()
