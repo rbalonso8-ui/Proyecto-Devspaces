@@ -5,6 +5,11 @@ Autor: Alonso Rodríguez Bolaños
 Fecha: 24/06/2026
     """
 import sys
+
+from requests import post
+import ui
+import utils
+import controller
 sys.path.append('./API')
 import devspace as ds
 import time
@@ -117,7 +122,7 @@ def menu_sistema(nombre_usuario, user_id):
     
             if success:
                 for usuario in data:
-                    print(f"ID: {usuario[0]} | Usuario: {usuario[1]}")
+                    print(f"Usuario: {usuario[0]} | Correo: {usuario[1]}")
             else:
                 print("No se pudo obtener la lista de usuarios.")
             input("\nPresione Enter para volver al menú...")
@@ -161,12 +166,14 @@ def menu_sistema(nombre_usuario, user_id):
                 respuesta = input("\nIngrese el número de la opción deseada: ")
                 if respuesta == "1":
                     space_id = input("\nIngrese el ID del space que desea seguir: ")
-                    success, message = ds.follow_space(user_id, space_id)
+                    success, message = ds.follow_space(nombre_usuario, int(space_id))
                     if success:
                         print("Space seguido exitosamente.")
-                else:
-                    print(f"Error al seguir el space: {message}")
-                if respuesta == "2":
+                        time.sleep(2)
+                    else:
+                        print(f"Error al seguir el space: {message}")
+                        time.sleep(2)
+                elif respuesta == "2":
                     print("\033c", end="")
                     print("Volviendo al menú principal...")
                     time.sleep(2)
@@ -190,7 +197,7 @@ def menu_sistema(nombre_usuario, user_id):
                     print("No sigues ningún space.")
                 else:
                     for space in data:
-                        print(f"ID: {space[0]} | Space: {space[1]} | Usuario: {space[2]}")
+                        print(f"ID: {space[0]} Space: {space[1]}")
             else:
                 print("No se pudo obtener la lista.")
     
@@ -206,11 +213,12 @@ def menu_sistema(nombre_usuario, user_id):
             success, data = ds.get_followers(nombre_usuario)
     
             if success:
-                if len(data) == 0:
+                seguidores = data[1]
+                if len(seguidores) == 0:
                     print("No tienes seguidores pendientes.")
                 else:
-                    for seguidor in data:
-                        print(f"Seguidor: {seguidor[0]} | Space: {seguidor[2]}" )
+                    for seguidor in seguidores:
+                            print(f"Seguidor: {seguidor[0]} | Space: {seguidor[2]}")
             else:
                 print("No se pudo obtener la lista de seguidores.")
     
@@ -230,40 +238,103 @@ def menu_sistema(nombre_usuario, user_id):
                 if len(data) == 0:
                     print("No tienes solicitudes de seguidores pendientes.")
                     time.sleep(2)
-            else:
-                for seguidor in data:
-                    print(f"Seguidor: {seguidor[0]} | Space: {seguidor[2]}")
-                    print("\nSeleccione una opcion del sistema:")
-                    print("\n1. Aceptar seguidor")
-                    print("2. Rechazar seguidor")
-                    decision = input("\nIngrese el número de la opción deseada: ")
-                
-                    if decision == "1":
-                        success_s, data_s = ds.handle_follower(nombre_usuario, seguidor[1], seguidor[0], True)
-                        if success_s:
-                            print("Seguidor aceptado.")
-                        else:
-                            print("No se pudo aceptar.")
-                    elif decision == "2":
-                        success_s, data_s = ds.handle_follower(nombre_usuario, seguidor[1], seguidor[0], False)
-                        if success_s:
-                            print("Seguidor rechazado.")
-                        else:
-                            print("No se pudo rechazar.")
-                            time.sleep(1)
-                    else:
-                        print("Opción no válida. Por favor, seleccione una opción válida.")
-                        time.sleep(1)
                 else:
-                    print("No se pudo obtener la lista de seguidores.")
-                    time.sleep(2)
-        
+                    seguidores = data[1]
+                    for seguidor in seguidores:
+                        print(f"Seguidor: {seguidor[0]} | Space: {seguidor[2]}")
+                        print("\nSeleccione una opcion del sistema:")
+                        print("\n1. Aceptar seguidor")
+                        print("2. Rechazar seguidor")
+                        decision = input("\nIngrese el número de la opción deseada: ")
+                
+                        if decision == "1":
+                            success_s, data_s = ds.handle_follower(nombre_usuario, int(seguidor[1]), seguidor[0], True)
+                            if success_s:
+                                print("\nSeguidor aceptado. \n")
+                                time.sleep(2)
+                            else:
+                                print("\nNo se pudo aceptar. \n")
+                                time.sleep(1)
+                        elif decision == "2":
+                            success_r, data_r = ds.handle_follower(nombre_usuario, int(seguidor[1]), seguidor[0], False)
+                            if success_r:
+                                print("\nSeguidor rechazado.\n")
+                                time.sleep(2)
+                            else:
+                                print("\nNo se pudo rechazar.\n")
+                                time.sleep(1)
+                        else:
+                            print("Opción no válida. Por favor, seleccione una opción válida.")
+                            time.sleep(1)
+            else:
+                print("\nNo se pudo obtener la lista de seguidores.")
+                input("\nPresione Enter para volver al menú...")
+                        
         #? ================================
         #?   Consulta de post por space
         #? ================================
         
         elif respuesta == "7":
-            pass
+            print("\033c", end="")
+            print("Consulta de posts por space:\n")
+
+            success, usuarios = ds.get_users()
+            user_space = {}
+
+            if success:
+                for user in usuarios:
+                    success_s, spaces = ds.get_spaces_by_user(user[0])
+                    if success_s:
+                        for space in spaces:
+                            user_space[space[0]] = user[0]
+
+            id_space = int(input("\nIngrese el ID del space: "))
+
+            if id_space not in user_space:
+                print("Space no encontrado.")
+                time.sleep(2)
+            else:
+                success, data = ds.get_posts(id_space, user_space[id_space])
+
+                if not success:
+                    print("No puedes ver este space: {}".format(data[1]))
+                    time.sleep(2)
+                else:
+                    posts = data[1]
+                    if len(posts) == 0:
+                        print("No hay posts en este space.")
+                        time.sleep(2)
+                    else:
+                        indice = 0
+                        while True:
+                            print("\033c", end="")
+                            post = posts[indice]
+                            print(f"Post {indice + 1} de {len(posts)}\n")
+                            print(f"Título: {post[1]}\n")
+
+                            if post[3] == "text":
+                                utils.animador(post[2])
+                            else:
+                                utils.resaltar(post[2])
+
+                            print("\n1. Siguiente  2. Anterior  3. Primer post  4. Último post  5. Salir")
+                            nav = input("\nOpción: ")
+
+                            if nav == "1":
+                                indice = min(indice + 1, len(posts) - 1)
+                            elif nav == "2":
+                                indice = max(indice - 1, 0)
+                            elif nav == "3":
+                                indice = 0
+                            elif nav == "4":
+                                indice = len(posts) - 1
+                            elif nav == "5":
+                                break
+                            else:
+                                print("Opción no válida.")
+                                time.sleep(1)
+
+            input("\nPresione Enter para volver al menú...")
         
         #? ==================
         #?   Cerrar sesión
@@ -284,5 +355,11 @@ def menu_sistema(nombre_usuario, user_id):
 if False:
     success, data = ds.create_user("alonso", "rbalonso8@gmail.com", "12345")
     print(success, data)
+    success, data = ds.create_user("carlos", "carlos@gmail.com", "12345")
+    print(success, data)
+
+    success, data = ds.create_post(36, "pares", "def es_par(n):\n    if n % 2 == 0:\n        print('par')\n    else:\n        print('impar')", "snippet")
+    print(success, data)
     
-menu_principal()
+if __name__ == "__main__":
+    menu_principal()
