@@ -5,14 +5,10 @@ Autor: Alonso Rodríguez Bolaños
 Fecha: 24/06/2026
 """
 import sys
-
-from requests import post
 import ui
 import utils
 import controller
 sys.path.append('./API')
-import devspace as ds
-import time
 
 #! ======================
 #!     MENU INICIAL
@@ -68,241 +64,32 @@ def menu_sistema(nombre_usuario, user_id):
         None
     """
     while True:
-        print("\033c", end="")
-        print("Funcionalidades del sistema DevSpace\n")
-        print("1. consulta de usuarios")
-        print("2. Consulta de spaces")
-        print("3. Seguir un space")
-        print("4. Consulta de spaces seguidos")
-        print("5. Consulta de seguidores de mis spaces")
-        print("6. Gestionar seguidores")
-        print("7. Consulta de post por space")
-        print("8. Cerrar sesión \n")
-        respuesta = input("Seleccione una opción: ")  
-        
-        #? ======================
-        #?  Consulta de Usuarios
-        #? ======================
-        
-        if respuesta == "1":
-            print("\033c", end="")
-            print("Lista de usuarios:\n")
-            success, data = ds.get_users()
-    
-            if success:
-                for usuario in data:
-                    print(f"Usuario: {usuario[0]} | Correo: {usuario[1]}")
-            else:
-                print("No se pudo obtener la lista de usuarios.")
-            input("\nPresione Enter para volver al menú...")
-            
-        #? ======================
-        #?  Consulta de Spaces
-        #? ======================
-            
-        elif respuesta == "2":
-            print("\033c", end="")
-            print("Lista de spaces:\n")
-    
-            success, usuarios = ds.get_users()
-            if success:
-                for user in usuarios:
-                    success_s, spaces = ds.get_spaces_by_user(user[0])
-                    if success_s:
-                        for space in spaces:
-                            print(f"ID: {space[0]} | Space: {space[1]} | Usuario: {user[0]}")
-
-            input("\nPresione Enter para volver al menú...")      
-            
-        #? ======================
-        #?   Seguir un Spaces
-        #? ======================  
-        
-        elif respuesta == "3":
-            print("\033c", end="")
-            print("Seguir un space:\n")
-    
-            success, usuarios = ds.get_users()
-            if success:
-                for user in usuarios:
-                    success_s, spaces = ds.get_spaces_by_user(user[0])
-                    if success_s:
-                        for space in spaces:
-                            print(f"ID: {space[0]} | Space: {space[1]} | Usuario: {user[0]}")
-                print("\nSeleccione una opcion del sistema:")
-                print("\n1. Seguir un space")
-                print("2. Volver al menú principal")
-                respuesta = input("\nIngrese el número de la opción deseada: ")
-                if respuesta == "1":
-                    space_id = input("\nIngrese el ID del space que desea seguir: ")
-                    success, message = ds.follow_space(nombre_usuario, int(space_id))
-                    if success:
-                        print("Space seguido exitosamente.")
-                        time.sleep(2)
-                    else:
-                        print(f"Error al seguir el space: {message}")
-                        time.sleep(2)
-                elif respuesta == "2":
-                    print("\033c", end="")
-                    print("Volviendo al menú principal...")
-                    time.sleep(2)
-                else:
-                    print("\033c", end="")
-                    print("Opción no válida. Por favor, seleccione una opción válida.")
-                    time.sleep(2)
-                 
-        #? ================================
-        #?   Consulta de Spaces seguidos
-        #? ================================
-        
-        elif respuesta == "4":  
-            print("\033c", end="")
-            print("Spaces que sigues:\n")
-    
-            success, data = ds.get_following_spaces(nombre_usuario)
-    
-            if success:
-                if len(data) == 0:
-                    print("No sigues ningún space.")
-                else:
-                    for space in data:
-                        print(f"ID: {space[0]} Space: {space[1]}")
-            else:
-                print("No se pudo obtener la lista.")
-    
-            input("\nPresione Enter para volver al menú...")
-        
-        #? =========================================
-        #?   Consulta de segudiores de mis spaces
-        #? =========================================
-        elif respuesta == "5":
-            print("\033c", end="")
-            print("Seguidores de mis spaces:\n")
-    
-            success, data = ds.get_followers(nombre_usuario)
-    
-            if success:
-                seguidores = data[1]
-                if len(seguidores) == 0:
-                    print("No tienes seguidores pendientes.")
-                else:
-                    for seguidor in seguidores:
-                            print(f"Seguidor: {seguidor[0]} | Space: {seguidor[2]}")
-            else:
-                print("No se pudo obtener la lista de seguidores.")
-    
-            input("\nPresione Enter para volver al menú...")
-            
-        #? =========================
-        #?   Gestionar seguidores
-        #? =========================
-        
-        elif respuesta == "6":
-            print("\033c", end="")
-            print("Gestionar seguidores:\n")
-    
-            success, data = ds.get_followers(nombre_usuario)
-    
-            if success:
-                if len(data) == 0:
-                    print("No tienes solicitudes de seguidores pendientes.")
-                    time.sleep(2)
-                else:
-                    seguidores = data[1]
-                    for seguidor in seguidores:
-                        print(f"Seguidor: {seguidor[0]} | Space: {seguidor[2]}")
-                        print("\nSeleccione una opcion del sistema:")
-                        print("\n1. Aceptar seguidor")
-                        print("2. Rechazar seguidor")
-                        decision = input("\nIngrese el número de la opción deseada: ")
-                
-                        if decision == "1":
-                            success_s, data_s = ds.handle_follower(nombre_usuario, int(seguidor[1]), seguidor[0], True)
-                            if success_s:
-                                print("\nSeguidor aceptado. \n")
-                                time.sleep(2)
-                            else:
-                                print("\nNo se pudo aceptar. \n")
-                                time.sleep(1)
-                        elif decision == "2":
-                            success_r, data_r = ds.handle_follower(nombre_usuario, int(seguidor[1]), seguidor[0], False)
-                            if success_r:
-                                print("\nSeguidor rechazado.\n")
-                                time.sleep(2)
-                            else:
-                                print("\nNo se pudo rechazar.\n")
-                                time.sleep(1)
-                        else:
-                            print("Opción no válida. Por favor, seleccione una opción válida.")
-                            time.sleep(1)
-            else:
-                print("\nNo se pudo obtener la lista de seguidores.")
-                input("\nPresione Enter para volver al menú...")
-                        
-        #? ================================
-        #?   Consulta de post por space
-        #? ================================
-        
-        elif respuesta == "7":
-            print("\033c", end="")
-            print("Consulta de posts por space:\n")
-
-            success, usuarios = ds.get_users()
-            user_space = {}
-
-            if success:
-                for user in usuarios:
-                    success_s, spaces = ds.get_spaces_by_user(user[0])
-                    if success_s:
-                        for space in spaces:
-                            user_space[space[0]] = user[0]
-
-            id_space = int(input("\nIngrese el ID del space: "))
-
-            if id_space not in user_space:
-                print("Space no encontrado.")
-                time.sleep(2)
-            else:
-                success, data = ds.get_posts(id_space, user_space[id_space])
-
-                if not success:
-                    print("No puedes ver este space: {}".format(data[1]))
-                    time.sleep(2)
-                else:
-                    posts = data[1]
-                    if len(posts) == 0:
-                        print("No hay posts en este space.")
-                        time.sleep(2)
-                    else:
-                        indice = 0
-                        while True:
-                            print("\033c", end="")
-                            post = posts[indice]
-                            print(f"Post {indice + 1} de {len(posts)}\n")
-                            print(f"Título: {post[1]}\n")
-
-                            if post[3] == "text":
-                                utils.animador(post[2])
-                            else:
-                                utils.resaltar(post[2])
-
-            input("\nPresione Enter para volver al menú...")
-        
-        #? ==================
-        #?   Cerrar sesión
-        #? ==================
-        
-        elif respuesta == "8":
-            print("\033c", end="")
+        opcion = ui.menu_interno(nombre_usuario)
+        if opcion == "1":
+            ui.lista_usuarios_terminal()
+        elif opcion == "2":
+            ui.lista_spaces_terminal()
+        elif opcion == "3":
+            ui.seguir_space_terminal(nombre_usuario)
+        elif opcion == "4":
+            ui.mostrar_spaces_seguidos(nombre_usuario)
+        elif opcion == "5":
+            ui.mostrar_seguidores(nombre_usuario)
+        elif opcion == "6":
+            ui.gestionar_seguidores(nombre_usuario)
+        elif opcion == "7":
+            ui.mostrar_posts(nombre_usuario)
+        elif opcion == "8":
+            utils.limpiar()
             print(f"Cerrando sesión. ¡Hasta luego, {nombre_usuario}!")
-            time.sleep(2)
-            print("\033c", end="")
+            utils.esperar(2)
+            utils.limpiar()
             break
         else:
-            print("\033c", end="")
+            utils.limpiar()
             print("Opción no válida. Por favor, seleccione una opción válida.")
-            time.sleep(2)
-            
+            utils.esperar(2)
+
 
 if False:
     success, data = ds.create_user("alonso", "rbalonso8@gmail.com", "12345")
@@ -311,5 +98,5 @@ if False:
     print(success, data)
     success, data = ds.create_post(36, "pares", "def es_par(n):\n    if n % 2 == 0:\n        print('par')\n    else:\n        print('impar')", "snippet")
     print(success, data)
-    
+
 menu_principal()

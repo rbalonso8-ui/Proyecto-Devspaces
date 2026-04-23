@@ -22,7 +22,7 @@ CYAN = "\033[96m"
 #!    PALABRAS
 #!=================
 
-PALABRAS_CLAVE = ["def", "if", "else", "elif", "return", "import", "for", "while", "True", "False", "int", "str", "float", "and", "or", "not", "print", "input", "None", "in"]
+PALABRAS_CLAVE = ["def", "if", "else", "elif", "return", "import", "for", "while", "True", "False", "str", "float", "and", "or", "not", "print", "input", "None", "int", "in"]
 
 #!=================
 #!  TEXTO ANIMADO
