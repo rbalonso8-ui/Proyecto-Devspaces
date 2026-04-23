@@ -238,7 +238,7 @@ def mostrar_posts(nombre_usuario):
         print(f"Post {indice + 1} de {len(posts)}\n")
         print(f"Título: {post[1]}\n")
 
-        if post[3] == "text":
+        if post[3] == "post":
             utils.animador(post[2])
         else:
             utils.resaltar(post[2])
@@ -247,12 +247,16 @@ def mostrar_posts(nombre_usuario):
         nav = input("\nOpción: ")
 
         if nav == "1":
+            utils.limpiar
             indice = 0
         elif nav == "2":
+            utils.limpiar
             indice = max(indice - 1, 0)
         elif nav == "3":
+            utils.limpiar
             indice = min(indice + 1, len(posts) - 1)
         elif nav == "4":
+            utils.limpiar
             indice = len(posts) - 1
         elif nav == "5":
             break

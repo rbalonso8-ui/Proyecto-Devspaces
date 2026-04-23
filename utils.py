@@ -5,6 +5,8 @@ Autor: Alonso Rodríguez Bolaños
 Fecha: 24/06/2026
 """
 
+import os
+import re
 import time
 
 #!=================
@@ -22,8 +24,28 @@ CYAN = "\033[96m"
 #!    PALABRAS
 #!=================
 
-PALABRAS_CLAVE = ["def", "if", "else", "elif", "return", "import", "for", "while", "True", "False", "str", "float", "and", "or", "not", "print", "input", "None", "int", "in"]
+COLOR_1 = ["if", "else", "elif", "for","import", "while"]
 
+COLOR_2 = ["True", "False", "None", "def", "and", "or", "not"]
+
+COLOR_3 = ["print", "input"]
+
+#!===================
+#!     Esperar
+#!===================
+
+def esperar(segundos):
+    """Pausa la ejecución durante un número específico de segundos.
+
+    Args:
+        segundos (int): Número de segundos a esperar.
+
+    Returns:
+        None
+    """
+    time.sleep(segundos)
+    
+    
 #!=================
 #!  TEXTO ANIMADO
 #!=================
@@ -41,9 +63,9 @@ def animador(contenido):
     for linea in lineas:
         for caracter in linea:
             print(caracter, end="", flush=True)
-            time.sleep(0.05)
+            esperar(0.05)
         print()
-        time.sleep(0.5)
+        esperar(0.5)
 
 #!=================
 #! TEXTO RESALTADO
@@ -59,8 +81,12 @@ def resaltar(contenido):
         None
     """
     for linea in contenido.split("\n"):
-        for palabra in PALABRAS_CLAVE:
-            linea = linea.replace(palabra, VERDE + palabra + RESET)
+        for palabra in COLOR_1:
+            linea = re.sub(r'\b' + palabra + r'\b', ROJO + palabra + RESET, linea)
+        for palabra in COLOR_2:
+            linea = re.sub(r'\b' + palabra + r'\b', AZUL + palabra + RESET, linea)
+        for palabra in COLOR_3:
+            linea = re.sub(r'\b' + palabra + r'\b', AMARILLO + palabra + RESET, linea)
         print(linea)
         
 #!===================
@@ -73,19 +99,4 @@ def limpiar():
     Returns:
         None
     """
-    print("\033[H\033[J", end="")
-    
-#!===================
-#!     Esperar
-#!===================
-
-def esperar(segundos):
-    """Pausa la ejecución durante un número específico de segundos.
-
-    Args:
-        segundos (int): Número de segundos a esperar.
-
-    Returns:
-        None
-    """
-    time.sleep(segundos)
+    os.system('cls' if os.name == 'nt' else 'clear')

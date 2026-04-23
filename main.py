@@ -9,6 +9,7 @@ import ui
 import utils
 import controller
 sys.path.append('./API')
+import devspace as ds
 
 #! ======================
 #!     MENU INICIAL
@@ -89,14 +90,5 @@ def menu_sistema(nombre_usuario, user_id):
             utils.limpiar()
             print("Opción no válida. Por favor, seleccione una opción válida.")
             utils.esperar(2)
-
-
-if False:
-    success, data = ds.create_user("alonso", "rbalonso8@gmail.com", "12345")
-    print(success, data)
-    success, data = ds.create_user("carlos", "carlos@gmail.com", "12345")
-    print(success, data)
-    success, data = ds.create_post(36, "pares", "def es_par(n):\n    if n % 2 == 0:\n        print('par')\n    else:\n        print('impar')", "snippet")
-    print(success, data)
-
+            
 menu_principal()

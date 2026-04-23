@@ -125,3 +125,5 @@ def buscador_posts(id_space):
     if resultado:
         return (data[1])
     return []
+
+seguir_spaces("alonso", 36)
