@@ -100,3 +100,17 @@ def limpiar():
         None
     """
     os.system('cls' if os.name == 'nt' else 'clear')
+    
+#!===================
+#!     Invalido
+#!===================
+
+def invalido():
+    """Imprime en rojo opcion no valida
+    
+    Returns:
+        None
+    """
+    limpiar()
+    print("Opción no válida.")
+    esperar(2)

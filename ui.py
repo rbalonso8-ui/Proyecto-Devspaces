@@ -26,13 +26,23 @@ def login_terminal():
     """Mostrar el menú de ingreso para un usuario existente.
     
     Returns:
-        tuple: (nombre_usuario, contraseña) ingresados por el usuario.
+        list: si funciona envia una lista con True y las credenciales del usuario
+        bool: False si no funciono el proceso
     """
     utils.limpiar()
     print("Ingresar al sistema\n")
     nombre_usuario = input("Ingrese su nombre de usuario: ")
-    contrasena = input("Ingrese su contraseña: ")
-    return (nombre_usuario, contrasena)
+    contraseña = input("Ingrese su contraseña: ")
+    resultado = controller.login(nombre_usuario, contraseña)
+    if resultado:
+        nombre_usuario, user_id = resultado
+        print(f"\nIngreso exitoso. Bienvenido, {nombre_usuario}.")
+        utils.esperar(2)
+        return([True, nombre_usuario, user_id])
+    else:
+        print("\nCredenciales incorrectas. Intente nuevamente.")
+        utils.esperar(2)
+        return (False)
 
 def menu_interno(nombre_usuario):
     """Muestra el menú interno para un usuario autenticado.

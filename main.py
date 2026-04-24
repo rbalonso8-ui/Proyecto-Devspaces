@@ -4,12 +4,8 @@ Módulo principal del sistema DevSpaces
 Autor: Alonso Rodríguez Bolaños
 Fecha: 24/06/2026
 """
-import sys
 import ui
 import utils
-import controller
-sys.path.append('./API')
-import devspace as ds
 
 #! ======================
 #!     MENU INICIAL
@@ -26,29 +22,20 @@ def menu_principal():
         opcion = ui.ingresar_terminal()
 
         if opcion == "1":
-            nombre_usuario, contraseña = ui.login_terminal()
-            resultado = controller.login(nombre_usuario, contraseña)
-
+            resultado = ui.login_terminal()
             if resultado:
-                nombre_usuario, user_id = resultado
-                print(f"\nIngreso exitoso. Bienvenido, {nombre_usuario}.")
-                utils.esperar(2)
+                nombre_usuario, user_id = resultado[1], resultado[2]
                 menu_sistema(nombre_usuario, user_id)
             else:
-                print("\nCredenciales incorrectas. Intente nuevamente.")
-                utils.esperar(2)
-
+                input("\npresiona enter para volver al menu principal ")
         elif opcion == "2":
             utils.limpiar()
             print("Gracias por usar DevSpace. ¡Hasta luego!")
-            utils.esperar(2)
             utils.limpiar()
+            utils.esperar(2)
             break
-
         else:
-            utils.limpiar()
-            print("Opción no válida.")
-            utils.esperar(2)
+            utils.invalido
 
 #! ======================
 #!    MENU INTERNO
