@@ -9,6 +9,10 @@ import sys
 sys.path.append('./API')
 import devspace as ds
 
+#? ===================
+#?       Login
+#? ===================
+
 def login(nombre_usuario, contraseña):
     """Establecer el menú de opciones para el ingreso de un usuario existente en el sistema de DevSpace.
 
@@ -21,6 +25,10 @@ def login(nombre_usuario, contraseña):
     else:
         return (False)
     
+#? ===================
+#?      Usuarios
+#? ===================
+    
 def lista_usuarios():
     """Obtiene la lista de usuarios del sistema.
 
@@ -31,6 +39,10 @@ def lista_usuarios():
     if resultado:
         return (data)
     return []
+
+#? ===================
+#?      Spaces
+#? ===================
 
 def lista_spaces():
     """Obtiene la lista de spaces.
@@ -47,6 +59,10 @@ def lista_spaces():
                 spaces.append((space[0], space[1], user[0]))
     return (spaces)
 
+#? ===================
+#?    Seguir Space
+#? ===================
+
 def seguir_spaces(nombre_usuario, space_id):
     """Permite a un usuario seguir un space.
 
@@ -59,6 +75,10 @@ def seguir_spaces(nombre_usuario, space_id):
     """
     resultado = ds.follow_space(nombre_usuario, space_id)
     return (resultado[0])
+
+#? ===================
+#?      Seguidos
+#? ===================
 
 def lista_space_seguidos(nombre_usuario):
     """Obtiene la lista de spaces que un usuario sigue.
@@ -74,6 +94,10 @@ def lista_space_seguidos(nombre_usuario):
         return (data)
     return []
 
+#? ===================
+#?    Seguidores
+#? ===================
+
 def lista_seguidores(nombre_usuario):
     """Obtiene los seguidores pendientes del usuario.
 
@@ -87,6 +111,10 @@ def lista_seguidores(nombre_usuario):
     if resultado:
         return data[1]
     return []
+
+#? ========================
+#?  Gestionar Seguidores
+#? ========================
 
 def gestionar_seguidor(nombre_usuario, space_id, seguidor, aceptar):
     """Acepta o rechaza un seguidor.
@@ -102,6 +130,10 @@ def gestionar_seguidor(nombre_usuario, space_id, seguidor, aceptar):
     """
     resultado, data = ds.handle_follower(nombre_usuario, int(space_id), seguidor, aceptar)
     return (resultado)
+
+#? ===================
+#?       Posts
+#? ===================
 
 def buscador_posts(id_space):
     """Obtiene los posts de un space buscando su dueño automáticamente.

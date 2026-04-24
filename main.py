@@ -27,12 +27,12 @@ def menu_principal():
                 nombre_usuario, user_id = resultado[1], resultado[2]
                 menu_sistema(nombre_usuario, user_id)
             else:
-                input("\npresiona enter para volver al menu principal ")
+                pass
         elif opcion == "2":
             utils.limpiar()
-            print("Gracias por usar DevSpace. ¡Hasta luego!")
-            utils.limpiar()
+            print(utils.colorear("Gracias por usar DevSpace. ¡Hasta luego!", 1))
             utils.esperar(2)
+            utils.limpiar()
             break
         else:
             utils.invalido()
@@ -55,8 +55,10 @@ def menu_sistema(nombre_usuario, user_id):
         opcion = ui.menu_interno(nombre_usuario)
         if opcion == "1":
             ui.lista_usuarios_terminal()
+            input("\nPresione Enter para volver al menú ")
         elif opcion == "2":
             ui.lista_spaces_terminal()
+            input("\nPresione Enter para volver al menú ")
         elif opcion == "3":
             ui.seguir_space_terminal(nombre_usuario)
         elif opcion == "4":
@@ -69,7 +71,7 @@ def menu_sistema(nombre_usuario, user_id):
             ui.mostrar_posts(nombre_usuario)
         elif opcion == "8":
             utils.limpiar()
-            print(f"Cerrando sesión. ¡Hasta luego, {nombre_usuario}!")
+            print(utils.colorear(f"Cerrando sesión. ¡Hasta luego, {nombre_usuario}!", 1))
             utils.esperar(2)
             utils.limpiar()
             break
