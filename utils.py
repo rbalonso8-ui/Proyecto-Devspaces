@@ -2,7 +2,7 @@
 Módulo de utilidades del sistema DEVSPACES.
 
 Autor: Alonso Rodríguez Bolaños
-Fecha: 24/06/2026
+Fecha: 24/04s/2026
 """
 
 import os
@@ -14,11 +14,10 @@ import time
 #!=================
 
 RESET = "\033[0m"
-VERDE = "\033[92m"
+ROJO = "\033[91m"
 AZUL = "\033[94m"
 AMARILLO = "\033[93m"
-ROJO = "\033[91m"
-CYAN = "\033[96m"
+VERDE = "\033[92m"
 
 #!=================
 #!    PALABRAS
@@ -112,5 +111,29 @@ def invalido():
         None
     """
     limpiar()
-    print("Opción no válida.")
+    print(ROJO + "Opción no válida." + RESET)
     esperar(2)
+    
+#!====================
+#!     Colorear
+#!====================
+def colorear(texto:str, color:int):
+    """Pinta un texto del color ingresado
+
+    Args:
+        texto (str): Texto a colorear
+        color (int): Numero referente al color
+        
+    Returns:
+        str: Texto ya coloreado
+    """
+    if color == 1:
+        return (ROJO + texto + RESET)
+    elif color == 2:
+        return (AZUL + texto + RESET)
+    elif color == 3:
+        return (AMARILLO + texto + RESET)
+    elif color == 4:
+        return (VERDE + texto + RESET)
+    else:
+        return (texto)

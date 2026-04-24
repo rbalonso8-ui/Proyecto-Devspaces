@@ -2,7 +2,7 @@
 Módulo principal del sistema DevSpaces
 
 Autor: Alonso Rodríguez Bolaños
-Fecha: 24/06/2026
+Fecha: 24/04/2026
 """
 import ui
 import utils
@@ -35,7 +35,7 @@ def menu_principal():
             utils.esperar(2)
             break
         else:
-            utils.invalido
+            utils.invalido()
 
 #! ======================
 #!    MENU INTERNO
@@ -74,8 +74,6 @@ def menu_sistema(nombre_usuario, user_id):
             utils.limpiar()
             break
         else:
-            utils.limpiar()
-            print("Opción no válida. Por favor, seleccione una opción válida.")
-            utils.esperar(2)
+            utils.invalido()
             
 menu_principal()

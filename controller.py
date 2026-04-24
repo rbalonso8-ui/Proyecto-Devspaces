@@ -2,7 +2,7 @@
 Módulo principal del sistema DevSpaces
 
 Autor: Alonso Rodríguez Bolaños
-Fecha: 24/06/2026
+Fecha: 24/04/2026
 """
 
 import sys
@@ -13,7 +13,7 @@ def login(nombre_usuario, contraseña):
     """Establecer el menú de opciones para el ingreso de un usuario existente en el sistema de DevSpace.
 
     Returns:
-        tuple: (nombre_usuario, user_id) si el ingreso es exitoso, False si falla.
+        tuple: (nombre_usuario, user_id) si el ingreso es exitoso o False si falla.
     """
     resultado = ds.login(nombre_usuario, contraseña)
     if resultado[0]:
@@ -125,5 +125,3 @@ def buscador_posts(id_space):
     if resultado:
         return (data[1])
     return []
-
-seguir_spaces("alonso", 36)

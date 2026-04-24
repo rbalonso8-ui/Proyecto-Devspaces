@@ -2,7 +2,7 @@
 Módulo de interfaz de usuario del sistema DEVSPACES.
 
 Autor: Alonso Rodríguez Bolaños
-Fecha: 24/06/2026
+Fecha: 24/04/2026
 """
 
 import controller
@@ -271,7 +271,6 @@ def mostrar_posts(nombre_usuario):
         elif nav == "5":
             break
         else:
-            print("Opción no válida.")
-            utils.esperar(1)
+            utils.invalido()
 
     input("\nPresione Enter para volver al menú...")
