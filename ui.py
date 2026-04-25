@@ -260,7 +260,7 @@ def gestionar_seguidores(nombre_usuario):
         elif decision == "2":
             respuesta = controller.gestionar_seguidor(nombre_usuario, seguidor[1], seguidor[0], False)
             if respuesta:
-                print(utils.colorear("\nSeguidor rechazado.", 4))
+                print(utils.colorear("\nSeguidor rechazado.", 1))
             else:
                 print(utils.colorear("\nNo se pudo rechazar.", 1))
         utils.esperar(1)
@@ -309,16 +309,16 @@ def mostrar_posts(nombre_usuario):
         nav = input(utils.colorear("\nOpción: ", 2))
 
         if nav == "1":
-            utils.limpiar
+            utils.limpiar()
             indice = 0
         elif nav == "2":
-            utils.limpiar
+            utils.limpiar()
             indice = max(indice - 1, 0)
         elif nav == "3":
-            utils.limpiar
+            utils.limpiar()
             indice = min(indice + 1, len(posts) - 1)
         elif nav == "4":
-            utils.limpiar
+            utils.limpiar()
             indice = len(posts) - 1
         elif nav == "5":
             break
