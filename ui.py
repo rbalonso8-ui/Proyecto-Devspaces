@@ -67,7 +67,7 @@ def menu_interno(nombre_usuario):
     """
     utils.limpiar()
     print(utils.colorear("Funcionalidades del sistema DevSpace\n", 2))
-    print("\t1. consulta de usuarios")
+    print("\t1. Consulta de usuarios")
     print("\t2. Consulta de spaces")
     print("\t3. Seguir un space")
     print("\t4. Consulta de spaces seguidos")
@@ -85,8 +85,8 @@ def menu_interno(nombre_usuario):
 def lista_usuarios_terminal():
     """Muestra la lista de usuarios en la terminal.
     
-    Args:
-        usuarios (list): Lista de usuarios a mostrar.
+    Returns:
+        None
     """
     utils.limpiar()
     print(utils.colorear("Lista de usuarios:\n", 2))
@@ -220,7 +220,7 @@ def mostrar_seguidores(nombre_usuario):
                 print(utils.colorear(f"Seguidor: {seguidor[0]} | Space: {seguidor[2]}", 3))
                 color -= 1
     else:
-        print("No tienes seguidores pendientes.")
+        print(utils.colorear("No tienes seguidores pendientes.", 1))
     input("\nPresione Enter para volver al menú...")
     
 #? ========================

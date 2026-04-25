@@ -2,7 +2,7 @@
 Módulo de utilidades del sistema DEVSPACES.
 
 Autor: Alonso Rodríguez Bolaños
-Fecha: 24/04s/2026
+Fecha: 24/04/2026
 """
 
 import os
