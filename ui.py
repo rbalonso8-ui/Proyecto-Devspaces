@@ -150,13 +150,13 @@ def seguir_space_terminal(nombre_usuario):
     opcion = input("\nSeleccione una opción: ")
 
     if opcion == "1":
-        space_id = input("Ingrese el ID del space que desea seguir: ")
+        space_id = input("\nIngrese el ID del space que desea seguir: ")
         resultado = controller.seguir_spaces(nombre_usuario, int(space_id))
         if resultado:
-            print(utils.colorear("Space seguido exitosamente.", 4))
+            print(utils.colorear("\nSpace seguido exitosamente.", 4))
             utils.esperar(2)
         else:
-            print(utils.colorear("No se pudo seguir el space.", 1))
+            print(utils.colorear("\nNo se pudo seguir el space.", 1))
             utils.esperar(2)
     elif opcion == "2":
         input("\nPresione Enter para volver al menú...")
@@ -284,45 +284,54 @@ def mostrar_posts(nombre_usuario):
     print(utils.colorear("Consulta de posts por space:\n", 2))
 
     lista_spaces_terminal()
+    
+    print("\n\t1. Mostrar un Sapce")
+    print("\t2. Salir")
+    eleccion = input("\nSeleccione una opcion: ")
+    
+    if eleccion == "1":
+        id_space = int(input("\nIngrese el ID del space: "))
+        posts = controller.buscador_posts(id_space)
 
-    id_space = int(input("\nIngrese el ID del space: "))
-    posts = controller.buscador_posts(id_space)
+        if not posts:
+            print(utils.colorear("No hay posts en este space.", 1))
+            utils.esperar(2)
+            return
 
-    if not posts:
-        print(utils.colorear("No hay posts en este space.", 1))
-        utils.esperar(2)
-        return
-
-    indice = 0
-    while True:
-        utils.limpiar()
-        post = posts[indice]
-        print(utils.colorear(f"Post {indice + 1} de {len(posts)}\n", 2))
-        print(utils.colorear(f"Título: {post[1]}\n", 3))
-
-        if post[3] == "post":
-            utils.animador(post[2])
-        else:
-            utils.resaltar(post[2])
-
-        print(utils.colorear("\n1. Primer post  2. Anterior  3. Siguiente  4. Último post  5. Salir", 2))
-        nav = input(utils.colorear("\nOpción: ", 2))
-
-        if nav == "1":
+        indice = 0
+        while True:
             utils.limpiar()
-            indice = 0
-        elif nav == "2":
-            utils.limpiar()
-            indice = max(indice - 1, 0)
-        elif nav == "3":
-            utils.limpiar()
-            indice = min(indice + 1, len(posts) - 1)
-        elif nav == "4":
-            utils.limpiar()
-            indice = len(posts) - 1
-        elif nav == "5":
-            break
-        else:
-            utils.invalido()
+            post = posts[indice]
+            print(utils.colorear(f"Post {indice + 1} de {len(posts)}\n", 2))
+            print(utils.colorear(f"Título: {post[1]}\n", 3))
+
+            if post[3] == "post":
+                utils.animador(post[2])
+            else:
+                utils.resaltar(post[2])
+
+            print(utils.colorear("\n1. Primer post  2. Anterior  3. Siguiente  4. Último post  5. Salir", 2))
+            nav = input(utils.colorear("\nOpción: ", 2))
+
+            if nav == "1":
+                utils.limpiar()
+                indice = 0
+            elif nav == "2":
+                utils.limpiar()
+                indice = max(indice - 1, 0)
+            elif nav == "3":
+                utils.limpiar()
+                indice = min(indice + 1, len(posts) - 1)
+            elif nav == "4":
+                utils.limpiar()
+                indice = len(posts) - 1
+            elif nav == "5":
+                break
+            else:
+                utils.invalido()
+    elif eleccion == "2":
+        pass
+    else:
+        utils.invalido()
 
     input("\nPresione Enter para volver al menú...")
